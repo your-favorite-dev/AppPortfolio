@@ -5,13 +5,33 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+
 public class AppPortfolio extends AppCompatActivity {
+    private List<Button> buttonList;
+    @Bind(R.id.mainMenuButton1)
+    Button mainButton1;
+    @Bind(R.id.mainMenuButton2)
+    Button mainButton2;
+    @Bind(R.id.mainMenuButton3)
+    Button mainButton3;
+    @Bind(R.id.mainMenuButton4)
+    Button mainButton4;
+    @Bind(R.id.mainMenuButton5)
+    Button mainButton5;
+    @Bind(R.id.capstoneButton)
+    Button capStoneButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,63 +39,26 @@ public class AppPortfolio extends AppCompatActivity {
         setContentView(R.layout.activity_app_portfolio);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        createMainButtonList();
+        final List<String> appNames = getAppNames();
 
-        Button button1 = (Button) findViewById(R.id.button1);
-        Button button2 = (Button) findViewById(R.id.button2);
-        Button button3 = (Button) findViewById(R.id.button3);
-        Button button4 = (Button) findViewById(R.id.button4);
-        Button button5 = (Button) findViewById(R.id.button5);
-        Button button6 = (Button) findViewById(R.id.button6);
+        if (buttonList.size() == appNames.size()) {
+            for (int i = 0; i < buttonList.size(); i++) {
+                buttonList.get(i).setOnClickListener(new View.OnClickListener() {
+                    private String appName;
 
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"This is the Spotify Streamer",Toast.LENGTH_LONG).show();
-            }
-        });
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "This is the " + appName, Toast.LENGTH_SHORT).show();
+                    }
 
-        button2.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"This is the Scores App ",Toast.LENGTH_LONG).show();
+                    private View.OnClickListener init(String name) {
+                        appName = name;
+                        return this;
+                    }
+                }.init(appNames.get(i)));
             }
-        });
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"This is the Library App",Toast.LENGTH_LONG).show();
-            }
-        });
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"This is Build It Bigger",Toast.LENGTH_LONG).show();
-            }
-        });
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"This is XYZ Reader",Toast.LENGTH_LONG).show();
-            }
-        });
-        button6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"This is the Capstone Project",Toast.LENGTH_LONG).show();
-            }
-        });
-
-        System.out.println(getApplicationContext());
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Extra Button", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        }
     }
 
     @Override
@@ -99,4 +82,14 @@ public class AppPortfolio extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void createMainButtonList() {
+        ButterKnife.bind(this);
+        buttonList = Arrays.asList(mainButton1, mainButton2, mainButton3, mainButton4, mainButton5, capStoneButton);
+    }
+
+    private List<String> getAppNames() {
+        return Arrays.asList("SPOTIFY STREAMER", "SCORES APP", "LIBRARY APP", "BUILDER BIGGER", "XYZ READER", "CAPSTONE PROJECT");
+    }
+
 }
